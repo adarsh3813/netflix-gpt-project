@@ -6,6 +6,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
+import { LOGIN_BACKGROUND_URL } from "../utils/utils";
+
 import Header from "./Header";
 
 const Login = () => {
@@ -35,18 +37,23 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorCode + "-" + errorMessage);
-          // ..
         });
     } else {
-      signInWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -60,10 +67,7 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/9f46b569-aff7-4975-9b8e-3212e4637f16/453ba2a1-6138-4e3c-9a06-b66f9a2832e4/IN-en-20240415-popsignuptwoweeks-perspective_alpha_website_small.jpg"
-          alt="background-image"
-        />
+        <img src={LOGIN_BACKGROUND_URL} alt="background-image" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
