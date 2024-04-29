@@ -4,13 +4,17 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 
 import { LOGIN_BACKGROUND_URL } from "../utils/utils";
 
 import Header from "./Header";
+import { addUser } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef();
@@ -38,6 +42,18 @@ const Login = () => {
           // Signed up
           const user = userCredential.user;
           console.log(user);
+          updateProfile(auth.currentUser, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+            })
+            .catch((error) => {
+              setErrorMessage(error.code + "-" + error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -52,8 +68,7 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
-          console.log(user);
+          // const user = userCredential.user;
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -67,7 +82,7 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute">
-        <img src={LOGIN_BACKGROUND_URL} alt="background-image" />
+        <img src={LOGIN_BACKGROUND_URL} alt="login-background" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
