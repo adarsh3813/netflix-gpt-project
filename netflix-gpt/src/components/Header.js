@@ -48,13 +48,17 @@ const Header = () => {
       {user && (
         <div className="text-right">
           <div className="w-32 flex justify-end items-center">
-            <img className="w-12" src={NETFLIX_AVATAR} alt="nav-logo" />
+            <img
+              className="w-12 rounded-md"
+              src={NETFLIX_AVATAR}
+              alt="nav-logo"
+            />
             <span className="cursor-pointer" onClick={handleProfileExpanded}>
               🔻
             </span>
           </div>
           {isProfileExpanded && (
-            <div className="p-2 text-white font-bold bg-black">
+            <div className="p-2 text-white font-bold bg-gradient-to-bl from-black rounded-md">
               <ul className="text-right ">
                 <li className="cursor-pointer" onClick={handleLogout}>
                   Logout
