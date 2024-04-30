@@ -63,7 +63,7 @@ const Header = () => {
                 <li className="cursor-pointer" onClick={handleLogout}>
                   Logout
                 </li>
-                <li>My Profile</li>
+                <li>{user.displayName}</li>
               </ul>
             </div>
           )}
