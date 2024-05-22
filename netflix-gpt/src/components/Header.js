@@ -6,6 +6,7 @@ import { auth } from "../utils/firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addUser, removeUser } from "../utils/userSlice";
+import { toggleGptSearchPage } from "../utils/gptSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,10 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleGptSearchClick = () => {
+    dispatch(toggleGptSearchPage());
+  };
+
   return (
     <div className="p-4 absolute z-10 bg-gradient-to-b from-black w-full flex justify-between">
       <div className="">
@@ -46,7 +51,13 @@ const Header = () => {
       </div>
 
       {user && (
-        <div className="text-right">
+        <div className="text-right flex">
+          <button
+            className="px-4 my-3 bg-purple-700 text-white rounded-md hover:bg-purple-950"
+            onClick={handleGptSearchClick}
+          >
+            GPT Search
+          </button>
           <div className="w-32 flex justify-end items-center">
             <img
               className="w-12 rounded-md"
@@ -56,17 +67,17 @@ const Header = () => {
             <span className="cursor-pointer" onClick={handleProfileExpanded}>
               🔻
             </span>
+            {isProfileExpanded && (
+              <div className="absolute mt-[7%] p-2 text-white font-bold bg-black rounded-sm">
+                <ul className="text-right ">
+                  <li className="cursor-pointer" onClick={handleLogout}>
+                    Logout
+                  </li>
+                  <li>{user.displayName}</li>
+                </ul>
+              </div>
+            )}
           </div>
-          {isProfileExpanded && (
-            <div className="p-2 text-white font-bold bg-gradient-to-bl from-black rounded-md">
-              <ul className="text-right ">
-                <li className="cursor-pointer" onClick={handleLogout}>
-                  Logout
-                </li>
-                <li>{user.displayName}</li>
-              </ul>
-            </div>
-          )}
         </div>
       )}
     </div>
